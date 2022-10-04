@@ -7,8 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.codepath.apps.restclienttemplate.models.Tweet
 
+private const val TAG = "TweetsAdapter"
 class TweetsAdapter(val tweets: ArrayList<Tweet>) : RecyclerView.Adapter<TweetsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,8 +28,13 @@ class TweetsAdapter(val tweets: ArrayList<Tweet>) : RecyclerView.Adapter<TweetsA
         holder.tvUserName.text = tweet.user?.name
         holder.tvTweetBody.text = tweet.body
 
-        Glide.with(holder.itemView).load(tweet.user?.publicImageUrl)
+        Glide.with(holder.itemView).load(tweet.user?.publicImageUrl).transform(CircleCrop())
+            .into(holder.ivProfileImage)
 
+    }
+
+    override fun getItemCount(): Int {
+        return tweets.size
     }
 
     fun clear() {
